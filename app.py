@@ -4,15 +4,25 @@ import os
 import logging
 import random
 from google.cloud import storage
+from google.cloud import secretmanager
 
 app = Flask(__name__)
 logger = logging.getLogger('waitress')
 logger.setLevel(logging.DEBUG)
 
+# Read google secret manager and access twitterapikey
+from google.cloud import secretmanager
+client = secretmanager.SecretManagerServiceClient()
+name = "projects/roi-mb-feb2025-emea/secrets/twitterapikey/versions/latest"
+response = client.access_secret_version(request={"name": name})
+twitterapikey = response.payload.data.decode("UTF-8")
+
+
 @app.route("/")
 def index():
   randomnum = random.randint(1, 100000)/100
-  return "Your Bank Account Balance is: $" + str(randomnum) + "!\n"
+  return "Your Bank Account Balance is: $" + str(randomnum) + "!\n" + "and the secret is " + twitterapikey + "\n"
+
 
 @app.route("/listfiles")
 def listfiles():
