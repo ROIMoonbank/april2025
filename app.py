@@ -13,7 +13,7 @@ logger.setLevel(logging.DEBUG)
 # Read google secret manager and access twitterapikey
 from google.cloud import secretmanager
 client = secretmanager.SecretManagerServiceClient()
-name = "projects/roi-mb-feb2025-emea/secrets/twitterapikey/versions/latest"
+name = "projects/roi-mb-feb2025-emea/secrets/twitterapikeys/versions/latest"
 response = client.access_secret_version(request={"name": name})
 twitterapikey = response.payload.data.decode("UTF-8")
 
